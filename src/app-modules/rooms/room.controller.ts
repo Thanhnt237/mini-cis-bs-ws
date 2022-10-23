@@ -4,27 +4,32 @@ import { transformArrayEntitiesToSerializer } from "../../common/helpers/transfo
 import { FindByIDDto } from "../../common/dto/findOne.dto";
 import { RoomService } from "./room.service";
 import { RoomSerializers } from "./serializers/room.serializers";
-import { CreateRoomDto, UpdateRoomDto } from "./dto/room.dto";
+import { AddNewRoomDto, CreateRoomDto, UpdateRoomDto } from "./dto/room.dto";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { apiTag } from "./constants/api-tag";
 
 @Controller(endpoint.rooms_prefix)
+@ApiTags(apiTag.Room)
 export class RoomController{
   constructor(
     private readonly roomService: RoomService
   ) {}
 
-  @Get(endpoint.rooms_get_all_room)
+  @Post(endpoint.rooms_get_all_room)
   async getAllRooms(): Promise<Array<RoomSerializers>> {
     return transformArrayEntitiesToSerializer(await this.roomService.getRoom(), RoomSerializers)
   }
 
-  @Get(endpoint.rooms_get_room_by_ID)
+  @Post(endpoint.rooms_get_room_by_ID)
   async getRoomByID(
     @Query() input: FindByIDDto,
   ): Promise<Array<RoomSerializers>>{
     return transformArrayEntitiesToSerializer(await this.roomService.getRoom(input), RoomSerializers)
   }
 
-
+  @ApiBody({
+    type: AddNewRoomDto
+  })
   @Post(endpoint.rooms_add_new_room)
   async addNewRoom(
     @Body('data', new ParseArrayPipe({ items: CreateRoomDto }))
@@ -33,7 +38,7 @@ export class RoomController{
     return new RoomSerializers(await this.roomService.createRoom(data))
   }
 
-  @Put(endpoint.rooms_update_room)
+  @Post(endpoint.rooms_update_room)
   async updateRoom(
     @Param('ID') ID: string,
     @Body() input: UpdateRoomDto

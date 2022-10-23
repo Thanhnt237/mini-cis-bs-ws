@@ -13,7 +13,7 @@ export class MysqlConfigService {
     }
 
     get host(): string {
-        return this.configService.get<string>('mysql.host');
+        return this.configService.get<any>('mysql.host');
     }
 
     get port(): number {

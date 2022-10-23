@@ -1,10 +1,10 @@
 import { PatientInterface } from "../interfaces/patient.interface";
 
 export class PatientSerializer implements PatientInterface{
+  ID: string
   Address: string;
   Code: string;
   DoB: Date;
-  DoExamine: Date;
   Email: string;
   Name: string;
   Nationality: string;

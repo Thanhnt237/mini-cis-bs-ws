@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity()
+@Entity('rooms')
 export class RoomEntity {
   @PrimaryGeneratedColumn('uuid')
   ID: string
@@ -10,6 +10,10 @@ export class RoomEntity {
     nullable: false
   })
   Name: string
+
+  @Column({
+
+  })
 
   @UpdateDateColumn({
     name: 'updated_at',

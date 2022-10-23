@@ -9,5 +9,4 @@ export interface PatientInterface{
   Occupation: string
   Nationality: string
   Symptom: string
-  DoExamine: Date
 }

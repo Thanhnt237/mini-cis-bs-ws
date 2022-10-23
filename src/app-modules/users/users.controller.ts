@@ -20,29 +20,50 @@ import {JwtAuthGuard} from "../../common/guards/jwt-auth.guard";
 import { FindByIDDto } from "../../common/dto/findOne.dto";
 import { UpdateUserDTO } from "./dto/update-users.dto";
 import { endpoint } from "../../common/constants/endpoint";
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import { apiTag } from "./constants/api-tag";
+import { ErrorFormatDto } from "../../common/dto/error-format.dto";
 
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller(endpoint.users_prefix)
+@ApiTags(apiTag.Users)
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({
+    description: "Unauthorized",
+    type: ErrorFormatDto
+})
 export class UsersController {
     constructor(
         private readonly usersService: UsersService
     ) {}
 
-    @Get(endpoint.users_get_all_user)
+    @ApiOkResponse({
+        description: "All users record",
+        type: UserSerializer,
+        isArray: true
+    })
+    @Post(endpoint.users_get_all_user)
     async getAllUser(): Promise<Array<UserSerializer>> {
         return transformArrayEntitiesToSerializer(await this.usersService.getAllUsers(), UserSerializer)
     }
 
-    @Get(endpoint.users_get_user_by_ID)
+    @Post(endpoint.users_get_user_by_ID)
+    @ApiOkResponse({
+        description: "All users record",
+        type: UserSerializer,
+        isArray: true
+    })
     async getUserByID(
-        @Query() input: FindByIDDto,
+        @Body() input: FindByIDDto,
     ): Promise<Array<UserSerializer>>{
         return transformArrayEntitiesToSerializer(await this.usersService.getUser(input), UserSerializer)
     }
 
-
+    @ApiBody({
+        type: AddNewUserDTO
+    })
     @Post(endpoint.users_add_new_user)
     async addNewUser(
         @Body('data', new ParseArrayPipe({ items: AddNewUserDTO }))
@@ -51,12 +72,11 @@ export class UsersController {
         return new UserSerializer(await this.usersService.addNewUser(data))
     }
 
-    @Put(endpoint.users_update_user)
+    @Post(endpoint.users_update_user)
     async updateUser(
-      @Param('ID') ID: string,
       @Body() input: UpdateUserDTO
     ): Promise<any>{
-        return this.usersService.updateUser(ID, input)
+        return this.usersService.updateUser(input)
     }
 
     @Post('test')

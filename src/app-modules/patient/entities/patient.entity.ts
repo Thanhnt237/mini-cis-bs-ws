@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { PatientInterface } from "../interfaces/patient.interface";
 
-@Entity()
+@Entity('patients')
 export class PatientEntity implements PatientInterface{
   @PrimaryGeneratedColumn('uuid')
   ID: string
@@ -32,15 +32,8 @@ export class PatientEntity implements PatientInterface{
   DoB: Date;
 
   @Column({
-    type: "date",
-    nullable: false
-  })
-  DoExamine: Date;
-
-  @Column({
     type: "varchar",
     length: 50,
-    unique: true,
     nullable: false
   })
   Email: string;

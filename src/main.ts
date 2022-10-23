@@ -5,10 +5,12 @@ import constants from './common/constants/constants';
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { AppConfigService } from "./config/app/config.service";
 import * as cookieParser from "cookie-parser";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    bufferLogs: true,
+    bufferLogs: true
   });
 
   const appConfig: AppConfigService = app.get(AppConfigService);
@@ -17,8 +19,7 @@ async function bootstrap() {
    * @description Global Middleware
    */
   app.use(cookieParser(appConfig.cookie_secret));
-  app.enableCors();
-
+  app.enableCors()
   /**
    * @description Global pipes
    */
@@ -32,6 +33,15 @@ async function bootstrap() {
    * @description Global Prefix
    */
   app.setGlobalPrefix(constants.GLOBAL_PREFIX)
+  app.use(helmet());
+  const config = new DocumentBuilder()
+    .setTitle('Mini-cis-web-ui')
+    .setDescription('Fack proj')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(8080);
 }

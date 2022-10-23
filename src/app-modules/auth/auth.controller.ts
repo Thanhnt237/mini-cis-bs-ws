@@ -8,15 +8,26 @@ import {
     UseInterceptors, ClassSerializerInterceptor, SerializeOptions
 } from "@nestjs/common";
 import {AuthService} from "./auth.service";
-import {SignUpDTO} from "./dto/auth.dto";
-import {LocalAuthGuard} from "../../common/guards/local-auth.guard";
+import { LoginInputDTO, SignUpDTO } from "./dto/auth.dto";
 import {Response} from "express";
 import {Public} from "../../common/decorators/api.decorator";
 import { LoginSerializer, SignUpSerializer } from "./serializers/auth.serializer";
 import { endpoint } from "../../common/constants/endpoint";
+import { ApiBadRequestResponse, ApiResponse, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import { apiTag } from "./tags/api-tag";
+import { ErrorFormatDto } from "../../common/dto/error-format.dto";
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller(endpoint.auth_prefix)
+@ApiTags(apiTag.Authentication)
+@ApiUnauthorizedResponse({
+    description: "Unauthorized",
+    type: ErrorFormatDto
+})
+@ApiBadRequestResponse({
+    description: "Bad request",
+    type:ErrorFormatDto
+})
 export class AuthController{
 
     constructor(
@@ -24,19 +35,26 @@ export class AuthController{
     ) {}
 
     @Post(endpoint.auth_login)
-    @UseGuards(LocalAuthGuard)
+
+    @ApiResponse({
+        status: 201,
+        description: "success",
+        type: LoginSerializer
+    })
     async Login(
-        @Res({passthrough: true}) response: Response,
-        @Request() req
+        @Body() input : LoginInputDTO,
+        @Res({passthrough: true}) response: Response
     ): Promise<LoginSerializer>{
-        let {accessToken, refreshToken} = await this.authService.login(req.user)
+        let user = await this.authService.validateUsers(input)
+
+        let {accessToken, refreshToken} = await this.authService.login(user)
 
         response.cookie('refresh-token', refreshToken, {
             httpOnly: true,
             secure: true
         })
 
-        return new LoginSerializer({accessToken, user: req.user})
+        return new LoginSerializer({accessToken, user: user})
     }
 
     @Public()
@@ -44,12 +62,15 @@ export class AuthController{
     @SerializeOptions({
         exposeUnsetFields: true
     })
+    @ApiResponse({
+        status: 201,
+        description: "success",
+        type: SignUpDTO
+    })
     async SignUp(
         @Res({passthrough: true}) response: Response,
         @Body() input: SignUpDTO
     ): Promise<SignUpSerializer>{
-        console.log(input)
-        return
         let { accessToken, refreshToken, addedUser } = await this.authService.signUp(input)
 
         response.cookie('refresh-token', refreshToken, {

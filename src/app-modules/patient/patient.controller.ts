@@ -12,13 +12,16 @@ import { JwtAuthGuard } from "../../common/guards/jwt-auth.guard";
 import { PatientService } from "./patient.service";
 import { endpoint } from "../../common/constants/endpoint";
 import { PatientSerializer } from "./serializers/patient.serializer";
-import { CreatePatientDto, UpdatePatientDTO } from "./dto/patient.dto";
+import { CreatePatientDto, GetAllDto, ImportPatient, UpdatePatientDTO } from "./dto/patient.dto";
 import { transformArrayEntitiesToSerializer } from "../../common/helpers/transform-serializer.helper";
 import { FindByIDDto } from "../../common/dto/findOne.dto";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { apiTag } from "./constants/api-tag";
 
 @Controller(endpoint.patients_prefix)
 @UseInterceptors(ClassSerializerInterceptor)
 @UseGuards(JwtAuthGuard)
+@ApiTags(apiTag.Patients)
 export class PatientController{
 
   constructor(
@@ -26,12 +29,14 @@ export class PatientController{
   ) {
   }
 
-  @Get(endpoint.patients_get_all_patient)
-  async getAllPatient(): Promise<Array<PatientSerializer>> {
-    return transformArrayEntitiesToSerializer(await this.patientService.getPatient(), PatientSerializer)
+  @Post(endpoint.patients_get_all_patient)
+  async getAllPatient(
+    @Body() input: GetAllDto
+  ): Promise<Array<PatientSerializer>> {
+    return transformArrayEntitiesToSerializer(await this.patientService.getPatient(input), PatientSerializer)
   }
 
-  @Get(endpoint.patients_get_patient_by_ID)
+  @Post(endpoint.patients_get_patient_by_ID)
   async getPatientByID(
     @Query() input: FindByIDDto
   ){
@@ -39,6 +44,9 @@ export class PatientController{
   }
 
   @Post(endpoint.patients_add_new_patient)
+  @ApiBody({
+    type: ImportPatient
+  })
   async addNewPatient(
     @Body('data', new ParseArrayPipe({ items: CreatePatientDto }))
       data: CreatePatientDto[]
@@ -46,12 +54,11 @@ export class PatientController{
     return new PatientSerializer(await this.patientService.addNewPatient(data))
   }
 
-  @Put(endpoint.patients_update_patient)
+  @Post(endpoint.patients_update_patient)
   async updatePatient(
-    @Param('ID') ID: string,
     @Body() input: UpdatePatientDTO
   ){
-    return this.patientService.updatePatient(ID, input)
+    return this.patientService.updatePatient(input)
   }
 
 }

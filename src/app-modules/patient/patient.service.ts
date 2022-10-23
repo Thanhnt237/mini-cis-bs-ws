@@ -19,12 +19,11 @@ export class PatientService{
   }
 
   async updatePatient(
-    ID: string,
     data: UpdatePatientDTO
   ){
     let standardInput = {
       condition: {
-        ID
+        ID: data.ID
       },
       data
     }

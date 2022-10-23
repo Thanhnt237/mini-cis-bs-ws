@@ -17,9 +17,12 @@ export class PatientRepository extends Repository<PatientEntity>{
     let expandCondition = {}
 
     if(input){
-      let {ID} = input;
+      let {ID, search_string} = input;
       if(ID){
         expandCondition["ID"] = ID
+      }
+      if(search_string){
+        expandCondition["Name"] = search_string
       }
     }
 

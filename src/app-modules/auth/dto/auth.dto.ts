@@ -1,34 +1,27 @@
-import {IsNotEmpty} from "class-validator";
+import { Allow, IsNotEmpty } from "class-validator";
 import { Expose } from "class-transformer";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class LoginInputDTO {
+    @ApiProperty()
     @IsNotEmpty()
-    @Expose({
-        name: "username"
-    })
     readonly UserName: string
 
     @IsNotEmpty()
-    @Expose({
-        name: "password"
-    })
+    @ApiProperty()
     readonly Password: string
 }
 
 export class SignUpDTO {
     @IsNotEmpty()
-    @Expose({name: "username"})
+    @ApiProperty()
     readonly UserName: string
 
     @IsNotEmpty()
-    @Expose({
-        name: "password"
-    })
+    @ApiProperty()
     readonly Password: string
 
     @IsNotEmpty()
-    @Expose({
-        name: "name"
-    })
+    @ApiProperty()
     readonly Name: string
 }

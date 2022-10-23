@@ -33,7 +33,6 @@ export class UsersService {
     }
 
     async updateUser(
-        ID: string,
         data: UpdateUserDTO
     ): Promise<any>{
         if(data.Password){
@@ -42,7 +41,7 @@ export class UsersService {
 
         let standardInput = {
             condition: {
-                ID
+                ID: data.ID
             },
             data
         }
