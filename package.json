@@ -22,8 +22,7 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migrate:create": "ts-node ./node_modules/typeorm/cli.js migration:create src/databases/migrations/create-users",
     "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run",
-    "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert",
-    "postinstall": "npm run prestart:prod"
+    "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
