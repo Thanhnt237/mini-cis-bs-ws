@@ -12,7 +12,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -22,7 +22,8 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migrate:create": "ts-node ./node_modules/typeorm/cli.js migration:create src/databases/migrations/create-users",
     "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run",
-    "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert"
+    "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert",
+    "postinstall": "npm run prestart:prod"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
