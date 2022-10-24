@@ -15,8 +15,8 @@ export class UsersService {
         private readonly usersRepository: UsersRepository
     ) {}
 
-    async getAllUsers(): Promise<Array<UsersEntity>>{
-        return await this.usersRepository.getUser()
+    async getAllUsers(input): Promise<Array<UsersEntity>>{
+        return await this.usersRepository.getUser(input)
     }
 
     async getUser(

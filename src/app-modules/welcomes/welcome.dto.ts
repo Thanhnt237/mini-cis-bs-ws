@@ -7,7 +7,9 @@ export class WelcomeDto{
 }
 
 export class GetAllWelcomeDto{
-
+  @Allow()
+  @ApiProperty()
+  search_string: string
 }
 
 export class AddNewWelcomeDto implements WelcomeInterface {
@@ -28,9 +30,9 @@ export class UpdateWelcomeDto {
   ID: string
   @ApiProperty()
   @Allow()
-  isPayment: boolean
+  IsPayment: boolean
   @ApiProperty()
   @Allow()
-  isActive: boolean
+  IsActive: boolean
 
 }

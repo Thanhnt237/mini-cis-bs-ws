@@ -15,11 +15,11 @@ export class WelcomeEntity implements WelcomeInterface{
   @Column({
     default: false
   })
-  isPayment: boolean;
+  IsPayment: boolean;
 
   @Column({
     type: "boolean",
     default: true
   })
-  isActive: boolean
+  IsActive: boolean
 }

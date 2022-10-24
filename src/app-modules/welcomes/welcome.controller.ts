@@ -30,7 +30,7 @@ export class WelcomeController{
   async updateWelcome(
     @Body() input: UpdateWelcomeDto
   ){
-    return
+    return this.welcomeService.updateWelcome(input)
   }
 
 }

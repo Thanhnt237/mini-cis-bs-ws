@@ -1,4 +1,4 @@
-import {IsEmail, IsNotEmpty, IsString} from 'class-validator';
+import {Allow, IsEmail, IsNotEmpty, IsString} from 'class-validator';
 import { Expose, Type } from "class-transformer";
 import { UsersInterface } from "../interfaces/users.interface";
 import { ApiProperty } from "@nestjs/swagger";
@@ -73,4 +73,10 @@ export class CreateUserDTO implements UsersInterface{
     readonly Room_ID?: string;
     readonly Speciality?: string;
     readonly UserName?: string;
+}
+
+export class GetAllUserDto {
+    @Allow()
+    @ApiProperty()
+    readonly search_string: string
 }

@@ -13,7 +13,7 @@ import {
 import {UserSerializer} from './serializers/user.serializer';
 
 import {UsersService} from "./users.service";
-import { AddNewUserDTO } from "./dto/users.dto";
+import {AddNewUserDTO, GetAllUserDto} from "./dto/users.dto";
 import {Cookies} from "../../common/decorators/cookies-parser.decorator";
 import {transformArrayEntitiesToSerializer} from "../../common/helpers/transform-serializer.helper";
 import {JwtAuthGuard} from "../../common/guards/jwt-auth.guard";
@@ -45,8 +45,10 @@ export class UsersController {
         isArray: true
     })
     @Post(endpoint.users_get_all_user)
-    async getAllUser(): Promise<Array<UserSerializer>> {
-        return transformArrayEntitiesToSerializer(await this.usersService.getAllUsers(), UserSerializer)
+    async getAllUser(
+        @Body() input: GetAllUserDto
+    ): Promise<Array<UserSerializer>> {
+        return transformArrayEntitiesToSerializer(await this.usersService.getAllUsers(input), UserSerializer)
     }
 
     @Post(endpoint.users_get_user_by_ID)

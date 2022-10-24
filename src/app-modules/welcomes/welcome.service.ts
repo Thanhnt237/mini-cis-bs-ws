@@ -20,7 +20,7 @@ export class WelcomeService{
   }
 
   async updateWelcome(input){
-    return this.welcomeRepos.updateWelcome(input.ID, input)
+    return this.welcomeRepos.updateWelcome({ID: input.ID}, input)
   }
 
 }

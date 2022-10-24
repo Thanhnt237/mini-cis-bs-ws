@@ -14,10 +14,13 @@ export class UsersRepository extends Repository<UsersEntity>{
     }
 
     async getUser(input?: any): Promise<Array<UsersEntity>>{
-        let expandCondition = {}
+        let expandCondition = {
+            IsActive: true
+        }
 
         if(input){
-            let {ID, Email, UserName} = input;
+            let {ID, Email, UserName, search_string=""} = input;
+            console.log(input)
             if(ID){
                 expandCondition["ID"] = ID
             }
@@ -28,6 +31,10 @@ export class UsersRepository extends Repository<UsersEntity>{
 
             if(UserName){
                 expandCondition["UserName"] = UserName
+            }
+
+            if(search_string.trim()){
+                expandCondition["Name"] = search_string.trim()
             }
         }
 

@@ -7,6 +7,10 @@ export class AddNewExamDto implements ExamInterfaces{
 
   @ApiProperty()
   @Allow()
+  Welcome_ID: string;
+
+  @ApiProperty()
+  @Allow()
   Patient_ID: string;
 
   @ApiProperty()
@@ -58,6 +62,12 @@ export class AddNewExamDto implements ExamInterfaces{
   Symptom: string;
 }
 
-export class AddNewWelcomeDto {
+export class GetAllExamDto{
+  @Allow()
+  @ApiProperty()
+  search_string: string
+}
+
+export class UpdateExamDto {
 
 }

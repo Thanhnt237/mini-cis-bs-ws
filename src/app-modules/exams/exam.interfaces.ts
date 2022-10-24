@@ -1,5 +1,7 @@
 export interface ExamInterfaces {
   ID: string
+  Welcome_ID: string
+  Patient_ID: string
   Symptom: string
   MedicalProcedure: string
   SelfMedHistory: string

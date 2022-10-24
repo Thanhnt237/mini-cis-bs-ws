@@ -12,11 +12,15 @@ export class ExamService{
   }
 
   async getAll(input){
-    return await this.examRepos.find()
+    return await this.examRepos.getAll(input)
   }
 
   async newExams(input) {
-    return await this.examRepos.save(input)
+    return await this.examRepos.addNew(input)
+  }
+
+  async updateExams(input){
+    return await this.examRepos.updateEnt({ID: input.ID}, input)
   }
 
 }

@@ -44,5 +44,5 @@ export class UpdateUserDTO{
 
   @ApiProperty()
   @IsBoolean()
-  readonly isActive?: boolean
+  readonly IsActive?: boolean
 }
