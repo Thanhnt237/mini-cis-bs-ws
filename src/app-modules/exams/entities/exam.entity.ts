@@ -23,11 +23,6 @@ export class ExamEntity implements ExamInterfaces{
   Welcome_ID: string;
 
   @Column({
-    type: "text",
-    nullable: true
-  })
-
-  @Column({
     type: "varchar",
     length: 20,
     default: "WAITING",

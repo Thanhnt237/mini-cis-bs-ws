@@ -76,6 +76,10 @@ export class UpdateExamDto {
   @ApiProperty()
   @Allow()
   Welcome_ID: string;
+  
+  @ApiProperty()
+  @Allow()
+  Exam_Status: string;
 
   @ApiProperty()
   @Allow()
