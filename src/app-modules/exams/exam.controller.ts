@@ -30,6 +30,6 @@ export class ExamController{
   async update(
       @Body() input: UpdateExamDto
   ) {
-    return this.examService.newExams(input)
+    return this.examService.updateExams(input)
   }
 }

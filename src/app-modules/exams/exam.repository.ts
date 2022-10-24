@@ -14,7 +14,20 @@ export class ExamRepository extends Repository<ExamEntity>{
   }
 
   async getAll(input){
-      return this.find()
+      let {search_string=""} = input
+      let expandCondition = ""
+
+      if(search_string){
+          expandCondition += ` and lower(p.Name) like '%${search_string.trim().toLowerCase()}%'`
+      }
+
+      let sql = `
+        select p.*, e.*
+        from exams as e 
+        left join patients as p on e.Patient_ID = p.ID
+        where e.IsActive ${expandCondition}
+      `
+      return this.query(sql)
   }
 
   async addNew(input){
